@@ -18,11 +18,11 @@ export function InterviewPanel({
   className = "",
 }: {
   mode?: string;
-  counter?: string;
+  counter?: ReactNode;
   progress?: number;
   orbState?: OrbState;
   waveActive?: boolean;
-  hint?: string;
+  hint?: ReactNode;
   children: ReactNode;
   className?: string;
 }) {
@@ -43,7 +43,7 @@ export function InterviewPanel({
           </span>
           <span className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-cream/70">{mode}</span>
         </div>
-        <span className="font-mono text-[0.68rem] tracking-[0.12em] text-cream/50">{counter}</span>
+        <span className="relative font-mono text-[0.68rem] tracking-[0.12em] text-cream/50">{counter}</span>
       </div>
 
       <div className="relative mx-5 mt-4 h-[3px] overflow-hidden rounded-full bg-white/10 sm:mx-6">

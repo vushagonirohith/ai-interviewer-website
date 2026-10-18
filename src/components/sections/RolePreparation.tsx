@@ -99,7 +99,7 @@ export function RolePreparation() {
           eyebrow="Features"
           title={
             <>
-              Prepare for the role <span className="italic text-ember">you actually want.</span>
+              Prepare for the role <span data-emph className="italic text-ember">you actually want.</span>
             </>
           }
           lede="General practice gets you started. Then bring your own resume and the job description you're aiming for, and the practice follows."

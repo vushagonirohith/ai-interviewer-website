@@ -27,6 +27,11 @@
   --color-sage: #6d9773;
   --color-honey: #e9a93b;
 
+  /* Semantic: the cell/card colour of the current surface, and ember used as
+     small text (lighter than ember on dark, darker on cream). */
+  --color-surface: #060a08;
+  --color-ember-text: #ff8a64;
+
   --color-java: #c4704b;
   --color-python: #d99a2b;
   --color-sql: #5e8a66;
@@ -125,6 +130,50 @@ html.js [data-intro] {
 
 .hairline {
   border-color: var(--line);
+}
+
+/* ---------- Surfaces ----------
+   The page alternates dark, warm cream and deep pine. Components are written
+   once against the dark tokens; a surface class remaps those tokens for its
+   subtree. On cream, "cream" (the foreground token) becomes ink, white
+   hairlines become ink hairlines, and ember/honey/sage darken so text keeps
+   at least 4.5:1 against #F6F1EA. Buttons keep night text on ember (7:1). */
+.surface-light {
+  --color-cream: #1c2420;
+  --color-mist: #4f5a54;
+  --color-fog: #646d68;
+  --color-white: #1c2420;
+  --color-ember: #c2410c;
+  --color-ember-text: #b93d14;
+  --color-honey: #8f5d0b;
+  --color-sage: #3d6845;
+  --color-ink-900: #fffdf9;
+  --color-surface: #fffdf9;
+  --line: rgb(28 36 32 / 0.1);
+  --panel-shadow: 0 30px 80px -40px rgb(12 59 46 / 0.35), 0 2px 6px rgb(12 59 46 / 0.06);
+  color: var(--color-cream);
+}
+
+/* Fog and small ember text lifted to ~5:1 on pine. */
+.surface-pine {
+  --color-fog: #9aa69f;
+  --color-ember: #ff7a4f;
+  --color-surface: #0c3b2e;
+}
+
+.sheet-cream {
+  background: #f6f1ea;
+}
+
+.sheet-pine {
+  background:
+    radial-gradient(90% 60% at 80% 50%, rgb(31 107 82 / 0.35), transparent 70%),
+    linear-gradient(180deg, #0c3b2e 0%, #0a3127 55%, #0c3b2e 100%);
+}
+
+/* Product panels: deep shadow on dark, a soft lifted one on paper. */
+.panel-shadow {
+  box-shadow: var(--panel-shadow, 0 40px 120px -30px rgb(0 0 0 / 0.9));
 }
 
 /* ---------- Voice orb ---------- */
@@ -274,6 +323,24 @@ html.js [data-intro] {
   100% {
     transform: scaleY(var(--h));
   }
+}
+
+/* ---------- Transcript highlights ----------
+   A marker stroke under the words that earned a rubric point. Drawn in full
+   by default; the interview demo sweeps it in (background-size) as each point
+   is scored. Default box-decoration-break (slice) makes the sweep run across
+   line breaks as one continuous stroke. */
+.hit {
+  --hit: rgb(109 151 115 / 0.36);
+  background-image: linear-gradient(var(--hit), var(--hit));
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 100% 42%;
+  border-radius: 2px;
+}
+
+.hit--partial {
+  --hit: rgb(233 169 59 / 0.34);
 }
 
 /* ---------- Misc ---------- */

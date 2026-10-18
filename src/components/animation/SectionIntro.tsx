@@ -1,14 +1,18 @@
 import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
-import { SplitHeading } from "./SplitHeading";
+import { SplitHeading, type HeadingVariant } from "./SplitHeading";
 
-/** The eyebrow + headline + lede trio that opens most sections. */
+/**
+ * The eyebrow + headline + lede trio that opens most sections. Mark the key
+ * phrase in `title` with `data-emph` to give it its own reveal beat.
+ */
 export function SectionIntro({
   index,
   eyebrow,
   title,
   lede,
   align = "left",
+  variant = "rise",
   className = "",
 }: {
   index: string;
@@ -16,6 +20,7 @@ export function SectionIntro({
   title: ReactNode;
   lede?: ReactNode;
   align?: "left" | "center";
+  variant?: HeadingVariant;
   className?: string;
 }) {
   const center = align === "center";
@@ -28,7 +33,10 @@ export function SectionIntro({
           {eyebrow}
         </p>
       </Reveal>
-      <SplitHeading className="mt-6 font-serif text-[2.6rem] leading-[1.02] tracking-[-0.01em] text-balance sm:text-6xl lg:text-[4.5rem]">
+      <SplitHeading
+        variant={variant}
+        className="mt-6 font-serif text-[2.6rem] leading-[1.02] tracking-[-0.01em] text-balance sm:text-6xl lg:text-[4.5rem]"
+      >
         {title}
       </SplitHeading>
       {lede && (

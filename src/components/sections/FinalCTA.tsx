@@ -45,8 +45,10 @@ export function FinalCTA() {
         <Reveal>
           <VoiceOrb size={88} />
         </Reveal>
-        <SplitHeading className="mt-12 font-serif text-[3rem] leading-[0.98] tracking-[-0.015em] text-balance sm:text-7xl lg:text-[6.5rem]">
-          Make your next interview <span className="italic text-ember">a better one.</span>
+        <SplitHeading
+          variant="focus"
+          className="mt-12 font-serif text-[3rem] leading-[0.98] tracking-[-0.015em] text-balance sm:text-7xl lg:text-[6.5rem]">
+          Make your next interview <span data-emph className="italic text-ember">a better one.</span>
         </SplitHeading>
         <Reveal delay={0.2}>
           <p className="mx-auto mt-8 max-w-lg text-lg leading-relaxed text-mist">

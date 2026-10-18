@@ -7,7 +7,8 @@ export const site = {
   tagline: "Practice. Understand. Improve. Repeat.",
   description:
     "A voice-first AI interview coach for software engineering candidates. Answer real technical questions aloud, get rubric-based feedback on every answer, and track the skills that need work.",
-  url: "https://ai-interviewer.example",
+  // Set NEXT_PUBLIC_SITE_URL to the real domain before launch (canonical URLs, OG tags).
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://ai-interviewer.example",
   contactEmail: "vushagonirohith@gmail.com",
 } as const;
 

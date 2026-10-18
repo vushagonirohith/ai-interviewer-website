@@ -28,10 +28,11 @@ npm run build && npm start   # production
 - Every animation runs inside `gsap.matchMedia("(prefers-reduced-motion: no-preference)")`; reduced-motion visitors get the final state.
 - Content is fully visible without JavaScript. Only `[data-intro]` hero elements start hidden, and only once JS is known to run.
 - The interview demo is pinned and scrubbed on desktop (≥1024px) and becomes stacked panels on mobile.
+- Headings use `SplitHeading` variants (`rise`, `words`, `focus`); mark the key phrase with `data-emph` to give it its own wipe-in beat.
 
 ## Before launch
 
-- Set the final product name in `src/lib/site.ts`, and `site.url` to the real domain.
+- Set the final product name in `src/lib/site.ts`, and `NEXT_PUBLIC_SITE_URL` to the real domain (it feeds `site.url`, canonical URLs and OG tags).
 - Replace the recreated phone screens with real screenshots (`public/app-screens/`, render an `<img>` inside `PhoneFrame`).
 - Confirm `links.fullPrivacyPolicy` and `links.deleteAccount` match the live GitHub Pages URLs.
 - All scores and levels shown are labelled as illustrative; keep it that way.

@@ -26,7 +26,7 @@ export function AppShowcase() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add(MOTION_OK, () => {
+      mm.add(`(max-width: 1023px) and ${MOTION_OK}`, () => {
         gsap.from("[data-phone]", {
           y: 120,
           autoAlpha: 0,
@@ -38,6 +38,32 @@ export function AppShowcase() {
         });
       });
       mm.add(`${DESKTOP} and ${MOTION_OK}`, () => {
+        // The phones arrive as one fanned stack, then deal out to their places.
+        const phones = gsap.utils.toArray<HTMLElement>("[data-phone]");
+        const row = root.current!.querySelector<HTMLElement>("[data-phones]")!.getBoundingClientRect();
+        const centre = row.left + row.width / 2;
+        const mid = (phones.length - 1) / 2;
+        gsap.set(phones, {
+          x: (_: number, el: HTMLElement) => {
+            const r = el.getBoundingClientRect();
+            return centre - (r.left + r.width / 2);
+          },
+          rotate: (i: number) => (i - mid) * 5,
+        });
+        gsap
+          .timeline({
+            defaults: { ease: ease.out },
+            scrollTrigger: { trigger: "[data-phones]", start: "top 78%", once: true },
+          })
+          .from(phones, { y: 140, autoAlpha: 0, duration: 0.9, stagger: 0.06 })
+          .to(phones, { x: 0, rotate: 0, duration: 1.3, ease: ease.inOut, stagger: 0.04 }, ">-0.15")
+          // Captions would pile up in the stack; they label each phone once it has landed.
+          .from(
+            phones.map((p) => p.querySelector("figcaption")),
+            { autoAlpha: 0, y: 8, duration: 0.6, stagger: 0.06, immediateRender: true },
+            ">-0.35",
+          );
+
         gsap.utils.toArray<HTMLElement>("[data-phone-inner]").forEach((el) => {
           const o = Number(el.dataset.offset);
           gsap.fromTo(
@@ -63,11 +89,12 @@ export function AppShowcase() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <SectionIntro
           index="07"
+          variant="words"
           eyebrow="The app"
           align="center"
           title={
             <>
-              Everything above, <span className="italic text-ember">in your pocket.</span>
+              Everything above, <span data-emph className="italic text-ember">in your pocket.</span>
             </>
           }
           lede="The website tells the story. The Android app is where the practice happens: cream for reading, pine for the interview room, ember when it's your move."

@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, SplitText, useGSAP } from "@/lib/gsap";
-import { MOTION_OK } from "@/lib/motion";
-import { Reveal } from "@/components/animation/Reveal";
+import { gsap, ScrollTrigger, SplitText, useGSAP } from "@/lib/gsap";
+import { MOTION_OK, ease } from "@/lib/motion";
+import { Sheet } from "@/components/animation/Sheet";
 
 const truths = [
   {
@@ -43,6 +43,23 @@ export function Problem() {
             },
           },
         );
+
+        // The three truths open like shutters, in whatever groups enter together.
+        gsap.set("[data-truth]", { clipPath: "inset(100% 0% 0% 0%)" });
+        ScrollTrigger.batch("[data-truth]", {
+          start: "top 85%",
+          once: true,
+          onEnter: (batch) => {
+            gsap
+              .timeline({ defaults: { ease: ease.out } })
+              .to(batch, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: ease.inOut, stagger: 0.15, clearProps: "clipPath" })
+              .from(
+                batch.flatMap((el) => Array.from(el.children)),
+                { y: 22, autoAlpha: 0, duration: 0.9, stagger: 0.05 },
+                0.35,
+              );
+          },
+        });
         return () => split.revert();
       });
     },
@@ -50,7 +67,8 @@ export function Problem() {
   );
 
   return (
-    <section ref={root} aria-labelledby="problem-title" className="relative py-28 sm:py-36 lg:py-48">
+    <section ref={root} aria-labelledby="problem-title" className="surface-light relative isolate py-28 sm:py-36 lg:py-48">
+      <Sheet className="sheet-cream" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <p className="eyebrow flex items-center gap-3">
           <span className="text-ember">01</span>
@@ -67,15 +85,15 @@ export function Problem() {
           <em className="text-ember">&ldquo;and why?&rdquo;</em> is another.
         </h2>
 
-        <Reveal className="mt-20 grid gap-px overflow-hidden rounded-3xl border border-white/[0.07] bg-white/[0.07] md:grid-cols-3">
+        <div className="mt-20 grid gap-px overflow-hidden rounded-3xl border border-white/[0.07] bg-white/[0.07] md:grid-cols-3">
           {truths.map((t, i) => (
-            <div key={t.title} data-reveal className="bg-night p-7 sm:p-9">
+            <div key={t.title} data-truth className="bg-surface p-7 sm:p-9">
               <span className="font-mono text-xs text-fog">0{i + 1}</span>
               <h3 className="mt-8 text-xl font-semibold tracking-tight">{t.title}</h3>
               <p className="mt-3 leading-relaxed text-mist">{t.body}</p>
             </div>
           ))}
-        </Reveal>
+        </div>
       </div>
     </section>
   );

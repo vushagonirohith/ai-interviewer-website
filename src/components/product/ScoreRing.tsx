@@ -16,7 +16,7 @@ export function ScoreRing({
     <figure className="flex flex-col items-center gap-3">
       <div className="relative" style={{ width: size, height: size }}>
         <svg viewBox="0 0 100 100" className="size-full -rotate-90" aria-hidden>
-          <circle cx="50" cy="50" r={r} fill="none" stroke="rgba(246,241,234,0.08)" strokeWidth="6" />
+          <circle cx="50" cy="50" r={r} fill="none" stroke="currentColor" strokeWidth="6" className="text-white/[0.08]" />
           <circle
             data-ring-arc
             data-value={value}

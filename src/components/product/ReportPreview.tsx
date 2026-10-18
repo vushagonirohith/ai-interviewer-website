@@ -12,7 +12,7 @@ const rubric: { point: string; verdict: Verdict; note: string }[] = [
 const verdictStyle: Record<Verdict, { label: string; dot: string; text: string }> = {
   demonstrated: { label: "Demonstrated", dot: "bg-sage", text: "text-sage" },
   partial: { label: "Partial", dot: "bg-honey", text: "text-honey" },
-  missed: { label: "Missed", dot: "bg-ember-deep", text: "text-[#ff8a64]" },
+  missed: { label: "Missed", dot: "bg-ember-deep", text: "text-ember-text" },
 };
 
 const skills = [
@@ -24,7 +24,7 @@ const skills = [
 /** A sample report. Values are illustrative and labelled as such. */
 export function ReportPreview() {
   return (
-    <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-ink-900/90 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)] backdrop-blur">
+    <div className="panel-shadow relative overflow-hidden rounded-[28px] border border-white/10 bg-ink-900/90 backdrop-blur">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.07] px-5 py-4 sm:px-7">
         <div>
           <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-mist">Interview report</p>
@@ -52,13 +52,13 @@ export function ReportPreview() {
               {rubric.map((r) => {
                 const v = verdictStyle[r.verdict];
                 return (
-                  <li data-rubric key={r.point} className="flex items-start gap-3 px-4 py-3">
-                    <span className={`mt-1.5 size-2 flex-none rounded-full ${v.dot}`} aria-hidden />
+                  <li data-rubric data-verdict={r.verdict} key={r.point} className="flex items-start gap-3 px-4 py-3">
+                    <span data-rubric-dot className={`mt-1.5 size-2 flex-none rounded-full ${v.dot}`} aria-hidden />
                     <div className="min-w-0 flex-1">
                       <p className="text-sm text-cream/90">{r.point}</p>
                       <p className="mt-0.5 text-xs text-fog">{r.note}</p>
                     </div>
-                    <span className={`flex-none text-[0.7rem] font-semibold uppercase tracking-[0.1em] ${v.text}`}>
+                    <span data-rubric-verdict className={`flex-none text-[0.7rem] font-semibold uppercase tracking-[0.1em] ${v.text}`}>
                       {v.label}
                     </span>
                   </li>
@@ -102,10 +102,13 @@ export function ReportPreview() {
                 You explained collisions step by step, in the order the lookup actually happens.
               </p>
             </div>
-            <div className="rounded-2xl border border-ember/30 bg-ember/[0.08] p-4">
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[#ff8a64]">Biggest opportunity</p>
+            <div data-opportunity className="rounded-2xl border border-ember/30 bg-ember/[0.08] p-4">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-ember-text">Biggest opportunity</p>
               <p className="mt-2 text-sm leading-relaxed text-cream/85">
-                Resizing and load factor. <span className="font-semibold text-ember">Practise this skill →</span>
+                Resizing and load factor.{" "}
+                <span className="font-semibold text-ember">
+                  Practise this skill <span data-opp-arrow className="inline-block">→</span>
+                </span>
               </p>
             </div>
           </div>

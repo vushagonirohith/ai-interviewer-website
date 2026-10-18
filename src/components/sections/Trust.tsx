@@ -1,4 +1,9 @@
+"use client";
+
+import { useRef } from "react";
 import Link from "next/link";
+import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { MOTION_OK, ease } from "@/lib/motion";
 import { SectionIntro } from "@/components/animation/SectionIntro";
 import { Reveal } from "@/components/animation/Reveal";
 
@@ -30,17 +35,47 @@ const principles = [
 ];
 
 export function Trust() {
+  const root = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(MOTION_OK, () => {
+        // Principles arrive in the groups that scroll in together; each number
+        // decodes as its card lands, like a rule being checked off.
+        gsap.set("[data-principle]", { autoAlpha: 0, y: 28 });
+        ScrollTrigger.batch("[data-principle]", {
+          start: "top 88%",
+          once: true,
+          onEnter: (batch) => {
+            gsap.to(batch, { autoAlpha: 1, y: 0, duration: 1, ease: ease.out, stagger: 0.1 });
+            batch.forEach((el, i) => {
+              const n = el.querySelector<HTMLElement>("[data-principle-n]")!;
+              gsap.to(n, {
+                duration: 0.8,
+                delay: 0.15 + i * 0.1,
+                scrambleText: { text: n.dataset.principleN!, chars: "0123456789", speed: 0.5 },
+              });
+            });
+          },
+        });
+      });
+    },
+    { scope: root },
+  );
+
   return (
-    <section aria-label="Honest by design" className="relative border-y border-white/[0.07] bg-ink-950 py-28 sm:py-36">
+    <section ref={root} aria-label="Honest by design" className="relative border-y border-white/[0.07] bg-ink-950 py-28 sm:py-36">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
           <div className="lg:sticky lg:top-32 lg:self-start">
             <SectionIntro
               index="06"
+              variant="focus"
               eyebrow="Trust"
               title={
                 <>
-                  Honest <span className="italic text-ember">by design.</span>
+                  Honest <span data-emph className="italic text-ember">by design.</span>
                 </>
               }
               lede="Feedback is only worth acting on if you can trust it. These rules hold everywhere in the product."
@@ -56,15 +91,17 @@ export function Trust() {
             </Reveal>
           </div>
 
-          <Reveal className="grid gap-px overflow-hidden rounded-3xl border border-white/[0.07] bg-white/[0.07] sm:grid-cols-2" stagger={0.07}>
+          <div className="grid gap-px overflow-hidden rounded-3xl border border-white/[0.07] bg-white/[0.07] sm:grid-cols-2">
             {principles.map((p, i) => (
-              <div key={p.title} data-reveal className="bg-ink-950 p-7">
-                <span className="font-mono text-xs text-ember">{String(i + 1).padStart(2, "0")}</span>
+              <div key={p.title} data-principle className="bg-ink-950 p-7">
+                <span data-principle-n={String(i + 1).padStart(2, "0")} className="font-mono text-xs text-ember">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 <h3 className="mt-5 text-lg font-semibold tracking-tight">{p.title}</h3>
                 <p className="mt-2 text-[0.95rem] leading-relaxed text-mist">{p.body}</p>
               </div>
             ))}
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>
